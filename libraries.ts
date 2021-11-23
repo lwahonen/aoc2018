@@ -24,13 +24,18 @@ export const levenshtein = (a: string, b: string): number => {
 export function fetchInputData(year: number, day: number) {
     let path1 = `/Users/lwahonen/Dropbox/advent/2018/data/day_${day}.txt`;
     if (fs.existsSync(path1)) {
-        // File exists in path
-    } else {
-        const {exec} = require("child_process");
-
-        let command = `/Users/lwahonen/aocli/aocdl -year ${year} -day ${day} -output ${path1}`;
-        execSync(command);
+        const file = fs.readFileSync(path1, 'utf-8');
+        return file;
     }
-    const file = fs.readFileSync(path1, 'utf-8');
-    return file;
+    const cookie = fs.readFileSync(`/Users/lwahonen/.aoc_cookie`, 'utf-8');
+    const sync_fetch = require('sync-fetch')
+    let cookie1 = `session=${cookie}`;
+    let data = sync_fetch(`https://adventofcode.com/${year}/day/${day}/input`, {
+        headers: {
+            Cookie: cookie1
+        }
+    }).text();
+    fs.writeFileSync(path1, data);
+    return data
+
 }
