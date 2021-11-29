@@ -27,7 +27,7 @@ export function fetchInputData(year: number, day: number) {
         const file = fs.readFileSync(path1, 'utf-8');
         return file;
     }
-    const cookie = fs.readFileSync(`/Users/lwahonen/.aoc_cookie`, 'utf-8');
+    const cookie = fs.readFileSync(`/Users/lwahonen/.aoc_cookie`, 'utf-8').trim();
     const sync_fetch = require('sync-fetch')
     let cookie1 = `session=${cookie}`;
     let data = sync_fetch(`https://adventofcode.com/${year}/day/${day}/input`, {
