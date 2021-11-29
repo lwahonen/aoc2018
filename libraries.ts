@@ -22,7 +22,7 @@ export const levenshtein = (a: string, b: string): number => {
 }
 
 export function fetchInputData(year: number, day: number) {
-    let path1 = `/Users/lwahonen/Dropbox/advent/2018/data/day_${day}.txt`;
+    let path1 = `/Users/lwahonen/Dropbox/advent/2018/data/day_${year}_${day}.txt`;
     if (fs.existsSync(path1)) {
         const file = fs.readFileSync(path1, 'utf-8');
         return file;
