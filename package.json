@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Advent of Code solutions",
   "author": "lwahonen",
+  "type": "module",
   "license": "CC0",
   "dependencies": {
     "@types/lodash": "^4.14.177",

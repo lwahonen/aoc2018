@@ -1,5 +1,4 @@
 import * as fs from "fs";
-import {execSync} from "child_process";
 
 export const levenshtein = (a: string, b: string): number => {
     const matrix = Array.from({length: a.length})
@@ -21,7 +20,7 @@ export const levenshtein = (a: string, b: string): number => {
     return matrix[a.length - 1][b.length - 1]
 }
 
-export function fetchInputData(year: number, day: number) {
+export function fetchInputData(year: number, day: number):string {
     let path1 = `/Users/lwahonen/Dropbox/advent/2018/data/day_${year}_${day}.txt`;
     if (fs.existsSync(path1)) {
         const file = fs.readFileSync(path1, 'utf-8');
