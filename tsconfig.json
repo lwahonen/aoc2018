@@ -9,6 +9,7 @@
     "esModuleInterop": true,
     "strictNullChecks": false,
     "inlineSourceMap": true,
+    "moduleResolution": "Node",
     "inlineSources": true,
     "noImplicitAny": false
   }
