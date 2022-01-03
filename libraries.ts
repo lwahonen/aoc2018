@@ -1,4 +1,7 @@
 import * as fs from "fs";
+import sync_fetch from "sync-fetch";
+import Logic from "logic-solver";
+
 
 export const levenshtein = (a: string, b: string): number => {
     const matrix = Array.from({length: a.length})
@@ -27,7 +30,6 @@ export function fetchInputData(year: number, day: number):string {
         return file;
     }
     const cookie = fs.readFileSync(`/Users/lwahonen/.aoc_cookie`, 'utf-8').trim();
-    const sync_fetch = require('sync-fetch')
     let cookie1 = `session=${cookie}`;
     let data = sync_fetch(`https://adventofcode.com/${year}/day/${day}/input`, {
         headers: {
@@ -37,4 +39,42 @@ export function fetchInputData(year: number, day: number):string {
     fs.writeFileSync(path1, data);
     return data
 
+}
+
+export function solveManyMapping(potentialValues: Map<string, Set<string>>) {
+    let allvalues = new Set();
+    for (let [key, value] of potentialValues) {
+        for (let op of value) {
+            allvalues.add(value);
+        }
+    }
+
+
+    let terms = []
+    for (let [key, value] of potentialValues) {
+        let biglog = `Logic.or(`
+        let bigstack = [];
+        for (let op of value) {
+            let bool = `${op}=${key}`
+            let log = `Logic.and("${bool}", `
+            let stack = [];
+            for (let forbid of potentialValues.keys()) {
+                if (forbid != key) {
+                    stack.push(`Logic.not("${op}=${forbid}")`);
+                }
+            }
+            log += stack.join(",") + ")"
+            bigstack.push(log)
+        }
+        biglog += bigstack.join(",\n") + ")"
+        terms.push(biglog)
+    }
+
+    var solver = new Logic.Solver();
+    for (let term of terms) {
+        let str = "solver.require(" + term + ")";
+        eval(str)
+    }
+    var sol1 = solver.solve();
+    return sol1.getTrueVars();
 }
