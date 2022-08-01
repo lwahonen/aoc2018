@@ -1,7 +1,8 @@
 import * as fs from "fs";
 import sync_fetch from "sync-fetch";
 import Logic from "logic-solver";
-
+// import os module
+import os from "os";
 
 export const levenshtein = (a: string, b: string): number => {
     const matrix = Array.from({length: a.length})
@@ -24,12 +25,12 @@ export const levenshtein = (a: string, b: string): number => {
 }
 
 export function fetchInputData(year: number, day: number):string {
-    let path1 = `/Users/lwahonen/Dropbox/advent/2018/data/day_${year}_${day}.txt`;
+    let path1 = os.homedir()+`/Dropbox/advent/2018/data/day_${year}_${day}.txt`;
     if (fs.existsSync(path1)) {
         const file = fs.readFileSync(path1, 'utf-8');
         return file;
     }
-    const cookie = fs.readFileSync(`/Users/lwahonen/.aoc_cookie`, 'utf-8').trim();
+    const cookie = fs.readFileSync(os.homedir()+`/.aoc_cookie`, 'utf-8').trim();
     let cookie1 = `session=${cookie}`;
     let data = sync_fetch(`https://adventofcode.com/${year}/day/${day}/input`, {
         headers: {
@@ -38,7 +39,6 @@ export function fetchInputData(year: number, day: number):string {
     }).text();
     fs.writeFileSync(path1, data);
     return data
-
 }
 
 export function solveManyMapping(potentialValues: Map<string, Set<string>>) {
