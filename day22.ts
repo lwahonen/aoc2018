@@ -1,7 +1,7 @@
 #!/usr/bin/env ts-node-script
 import {fetchInputData} from "./libraries.js";
 import {
-    MinPriorityQueue,
+    MinPriorityQueue, PriorityQueue,
 } from '@datastructures-js/priority-queue';
 import _ from "lodash";
 
@@ -62,16 +62,15 @@ function check_direction(new_x: number, new_y, tool: number, needsUpdates, trave
 }
 
 function travel() {
-    const needsUpdates = new MinPriorityQueue({
-        priority: (l) => {
-            let cost = l["travel_cost"] + l["tool_cost"];
-            return cost
-        }
+    const needsUpdates = new PriorityQueue((a: any, b: any) => {
+        let a_cost = a["travel_cost"] + a["tool_cost"];
+        let b_cost = b["travel_cost"] + b["tool_cost"];
+        return a_cost - b_cost;
     });
     // Seed
     needsUpdates.enqueue({x: 0, y: 0, travel_cost: 0, tool_cost: 0, tool: 1})
     while (!needsUpdates.isEmpty()) {
-        let here = needsUpdates.dequeue()["element"];
+        let here = needsUpdates.dequeue();
         let key = `${here.x},${here.y},${here.tool}`
         let journey_cost = here.tool_cost + here.travel_cost;
         if (bestForKey.hasOwnProperty(key) && bestForKey[key] <= (journey_cost))
