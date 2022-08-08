@@ -78,3 +78,9 @@ export function solveManyMapping(potentialValues: Map<string, Set<string>>) {
     var sol1 = solver.solve();
     return sol1.getTrueVars();
 }
+
+export function keyCount(myobj: any) {
+    var count = 0;
+    for (let k in myobj) if (myobj.hasOwnProperty(k)) ++count;
+    return count;
+}
